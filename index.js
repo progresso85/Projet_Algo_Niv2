@@ -13,7 +13,7 @@ function modifTitre(Film){
     console.log(Film);
 };
 
-
+//Modif sur tous les films 
 function changeTitle(){
     for (let i =0; i < json.length; i++){
         let Film = json[i];
@@ -22,6 +22,7 @@ function changeTitle(){
 };
 changeTitle();
 
+//Creation d'un nouveau fichier
 let stringOut = JSON.stringify(json,null,'\t');
 let fs = require('fs');
 fs.writeFile("movies.out.json",stringOut,function(err) {
