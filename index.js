@@ -29,3 +29,12 @@ fs.writeFile("movies.out.json",stringOut,function(err) {
     if(err) return console.error(err);
     console.log('done');
  });
+
+ //Temps exe 
+ function synchronous() {
+    console.time("sync");
+    fs.readFileSync("./movies.json")
+    console.timeEnd("sync")
+}
+
+synchronous();
