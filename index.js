@@ -5,7 +5,7 @@ let myArgs = process.argv.slice(2);
 console.log('myArgs:',myArgs);
 
 if (myArgs[0] == '-action'){
-    
+
     switch (myArgs[1]){
         case 'transform':
             //Modif date + titre
@@ -36,7 +36,7 @@ if (myArgs[0] == '-action'){
                 console.log('done');
             });
 
-            //Temps exe 
+            //Temps execution 
             function synchronous() {
                 console.time("sync");
                 fs.readFileSync("./movies.json")
@@ -45,15 +45,64 @@ if (myArgs[0] == '-action'){
             synchronous();
             break;
         case 'sort_date':
-            console.log("tri date");
+            //Tri de date dans le titre
+            function modifTitre(Film){
+                let newdate = new Date(Film['release_date']*1000);
+                let year = newdate.getFullYear();
+                let title = Film['title'];
+                let newTitle = "(" + year + ")" +title;
+                console.log(newTitle);
+                Film["title"] = newTitle;
+                console.log(Film);
+            };
+
+            //Modif sur tous les films 
+            function changeTitle(){
+                for (let i =0; i < json.length; i++){
+                    let Film = json[i];
+                    modifTitre(Film);
+                }
+            };
+            changeTitle();
+
+            //Tri croissant des dates 
+            json.sort(
+                function(a, b){
+                var x = a.title.toLowerCase();
+                var y = b.title.toLowerCase();
+                if (x < y) {return -1;}
+                if (x > y) {return 1;}
+                return 0;
+            });
+            console.log(json);
             break;
         case 'sort_titre':
-            console.log("trie alpha")    
+            json.sort(
+                function(a, b){
+                var x = a.title.toLowerCase();
+                var y = b.title.toLowerCase();
+                if (x < y) {return -1;}
+                if (x > y) {return 1;}
+                return 0;
+            });
+            console.log(json);
+            break;
+        case 'search_date':
+            function searchDate(year, sorted){
+                for (let i =0; i < json.length; i++){
+                    let date = new Date (json[i].release_date*1000);
+                    let getyear = date.getFullYear();
+                    if(getyear == year){
+                        console.log(json[i].title);
+                    }
+                }
+            };
+            searchDate(2022, false);
+            break;
         default: 
-        console.log("pas compris")   
-            
-    
+        console.log("pas compris")
+
+
     }
 
 }
-
